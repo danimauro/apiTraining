@@ -1,1 +1,1 @@
-#Api Trainig Certification center
+#Api Training Certification center
