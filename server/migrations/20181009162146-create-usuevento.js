@@ -3,12 +3,6 @@ const uuid = require('uuid/v4');
 module.exports = {
     up: (queryInterface, Sequelize) => {
         return queryInterface.createTable('Usueventos', {
-            id: {
-                allowNull: false,
-                primaryKey: true,
-                type: Sequelize.UUID,
-                defaultValue: uuid()
-            },
             usuarioId: {
                 type: Sequelize.UUID
             },
@@ -18,6 +12,9 @@ module.exports = {
             fecinscrip: {
                 type: Sequelize.DATE,
                 allowNull: false
+            },
+            fectermino: {
+                type: Sequelize.DATE
             },
             estado: {
                 type: Sequelize.BOOLEAN,

@@ -24,7 +24,6 @@ app.post('/usuevento', verificaToken, verificaAdmin, (req, res) => {
         usuarioId: body.usuarioId,
         eventoId: body.eventoId,
         fecinscrip: body.fecinscrip,
-        fecevento: body.fecevento,
         estado: true
 
     }).then(() => {

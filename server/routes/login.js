@@ -13,7 +13,7 @@ app.post('/login', (req, res) => {
     //se busca por medio del modelo Usuario
 
     Usuario.findOne({
-        attributes: ['id', 'nombre', 'apellido', 'email', 'password', 'estado', 'tipo'],
+        attributes: ['codigo', 'nombre', 'apellido', 'email', 'password', 'estado', 'tipo'],
         where: { email: body.email },
     }).then(usuarioDB => {
 

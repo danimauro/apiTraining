@@ -1,15 +1,12 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
     const Usuevento = sequelize.define('Usuevento', {
-        id: {
-            allowNull: false,
-            primaryKey: true,
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4
-        },
         fecinscrip: {
             type: DataTypes.DATE,
             allowNull: false
+        },
+        fectermino: {
+            type: DataTypes.DATE
         },
         estado: {
             type: DataTypes.BOOLEAN,

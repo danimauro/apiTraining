@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
     const Organizacion = sequelize.define('Organizacion', {
-        id: {
+        codigo: {
             allowNull: false,
             primaryKey: true,
             type: DataTypes.UUID,
@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {});
     Organizacion.associate = function(models) {
-        Organizacion.hasMany(models.Evento);
+        Organizacion.hasMany(models.Evento, { foreignKey: 'orgaId' });
     };
     return Organizacion;
 };

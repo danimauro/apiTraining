@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 // Importar el modelo usuarios
 const Usuario = require('../models').Usuario;
 const Evento = require('../models').Evento;
+const Usuevento = require('../models').Usuevento;
 
 //middelewares
 const { verificaToken, verificaAdmin } = require('../middlewares/autentication');
@@ -75,22 +76,23 @@ app.post('/estudiante', verificaToken, verificaAdmin, (req, res) => {
 
 app.get('/estuevento/:id', verificaToken, verificaAdmin, (req, res) => {
 
+
     Usuario.findAll({
-        include: [{
+        include:[{
             model: Evento,
-            as: 'Eventos',
-            attributes: ['id','nombre', 'descrip', 'imagen', 'fecevento'],
-            through: { attributes: [] },
+            as: 'eventoUsuario',
+            attributes: ['codigo','nombre', 'descrip', 'imagen', 'fecevento'],
+            through: { attributes: ['usuarioId','fecinscrip', 'fectermino', 'estado'] },
             where: { estado: true },
         }],
         attributes: ['identidad', 'nombre', 'apellido', 'email', 'telcel', 'telfijo', 'edad', 'sexo', 'fecregistro'],
-        where: { estado: true, id: req.params.id }
-    }).then(estudianteDB => {
+        where: { estado: true, codigo: req.params.id }
+    }).then(eventosEstudianteDB => {
 
-        if (estudianteDB.length > 0) {
+        if (eventosEstudianteDB.length > 0) {
             return res.status(200).json({
                 ok: true,
-                estudianteDB
+                eventosEstudianteDB
             });
         }
 
@@ -98,7 +100,6 @@ app.get('/estuevento/:id', verificaToken, verificaAdmin, (req, res) => {
             ok: false,
             message: 'No se encontró un estudiante con ese id'
         });
-
 
     });
 

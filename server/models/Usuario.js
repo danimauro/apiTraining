@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
     const Usuario = sequelize.define('Usuario', {
-        id: {
+        codigo: {
             allowNull: false,
             primaryKey: true,
             type: DataTypes.UUID,
@@ -57,9 +57,10 @@ module.exports = (sequelize, DataTypes) => {
     }, {});
     Usuario.associate = function(models) {
         Usuario.belongsToMany(models.Evento, {
-            through: { model: models.Usuevento },
-            foreignKey: 'usuarioId'
-        });
+            through: 'Usuevento',
+            as: 'eventoUsuario',
+            foreignKey: 'usuarioId',
+        })
     };
     return Usuario;
 };

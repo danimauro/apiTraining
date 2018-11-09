@@ -107,12 +107,12 @@ app.put('/activaradmin', (req, res) => {
                     message: 'Usuario activado correctamente'
                 });
             }
-        }).chatch(err => {
+        }); /*.chatch(err => {
             return res.status(200).json({
                 ok: false,
                 message: 'Error al activar el usuario'
             });
-        });
+        });*/
 
 
     });

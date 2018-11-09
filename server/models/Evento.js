@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
     const Evento = sequelize.define('Evento', {
-        id: {
+        codigo: {
             allowNull: false,
             primaryKey: true,
             type: DataTypes.UUID,
@@ -24,14 +24,15 @@ module.exports = (sequelize, DataTypes) => {
     }, {});
     Evento.associate = function(models) {
         
-        Evento.belongsTo(models.Categoria, { foreignKey: 'cateId' });
+        /*Evento.belongsTo(models.Categoria, { foreignKey: 'cateId' });
         Evento.belongsTo(models.Organizacion, { foreignKey: 'orgaId' });
-        Evento.belongsTo(models.Invitado, { foreignKey: 'invitadoId' });
+        Evento.belongsTo(models.Invitado, { foreignKey: 'invitadoId' });*/
 
         Evento.belongsToMany(models.Usuario, {
-            through: { model: models.Usuevento},
-            foreignKey: 'eventoId'
-        });
+            through: 'Usuevento',
+            as: 'eventoUsuario',
+            foreignKey: 'eventoId',
+        })
     };
     return Evento;
 };

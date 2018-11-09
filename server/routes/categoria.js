@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 // Importar el modelo usuarios
-const Categoria = require('../models').Categoria;
+const Categorias = require('../models').Categorias;
 
 //middelewares
 const { verificaToken, verificaAdmin } = require('../middlewares/autentication');
@@ -13,14 +13,19 @@ const { verificaToken, verificaAdmin } = require('../middlewares/autentication')
 
 app.get('/categorias', verificaToken, (req, res) => {
 
-    Categoria.findAll({
-
+    Categorias.findAll({
         where: { estado: true }
     }).then(categoriaDB => {
         return res.status(200).json({
             ok: true,
             categoriaDB
         });
+    }).catch(err => {
+        return res.status(500).json({
+            ok: false,
+            message: err
+        });
+
     });
 
 });
@@ -34,7 +39,7 @@ app.post('/categoria', verificaToken, verificaAdmin, (req, res) => {
     //Se toman los datos por medio del POST
     let body = req.body;
 
-    Categoria.create({
+    Categorias.create({
 
         nombre: body.nombre,
         descrip: body.descrip,
@@ -50,7 +55,7 @@ app.post('/categoria', verificaToken, verificaAdmin, (req, res) => {
     }).catch(err => {
         return res.status(500).json({
             ok: false,
-            message: err.errors
+            message: err
         });
 
     });
