@@ -10,6 +10,7 @@ const Usuevento = require('../models').Usuevento;
 //middelewares
 const { verificaToken, verificaAdmin } = require('../middlewares/autentication');
 
+
 /*==============
 * Traer Estudiante
 ================*/
@@ -18,13 +19,19 @@ app.get('/estudiantes', verificaToken, (req, res) => {
 
     Usuario.findAll({
         attributes: { exclude: ['password'] },
-        where: { tipo: 'estudiante', estado: true }
-    }).then(usuarioDB => {
+        where: { tipo: 'estudiante' }
+    }).then(estudiantesDB => {
         return res.status(200).json({
             ok: true,
-            usuarioDB
+            estudiantesDB
         });
-    });
+    }).catch(err => {
+        return res.status(400).json({
+            ok: false,
+            message: 'Error al consultar la información'
+        });
+
+    });;
 
 });
 
@@ -83,13 +90,14 @@ app.get('/estuevento/:id', verificaToken, verificaAdmin, (req, res) => {
             as: 'eventoUsuario',
             attributes: ['codigo','nombre', 'descrip', 'imagen', 'fecevento'],
             through: { attributes: ['usuarioId','fecinscrip', 'fectermino', 'estado'] },
-            where: { estado: true },
+            where: { },
         }],
-        attributes: ['identidad', 'nombre', 'apellido', 'email', 'telcel', 'telfijo', 'edad', 'sexo', 'fecregistro'],
+        attributes: ['codigo','identidad', 'nombre', 'apellido', 'email', 'telcel', 'telfijo', 'edad', 'sexo', 'fecregistro'],
         where: { estado: true, codigo: req.params.id }
     }).then(eventosEstudianteDB => {
 
         if (eventosEstudianteDB.length > 0) {
+
             return res.status(200).json({
                 ok: true,
                 eventosEstudianteDB
@@ -98,7 +106,54 @@ app.get('/estuevento/:id', verificaToken, verificaAdmin, (req, res) => {
 
         return res.status(400).json({
             ok: false,
-            message: 'No se encontró un estudiante con ese id'
+            message: 'No se encontró un estudiante con ese codigo'
+        });
+
+    });
+
+});
+
+app.put('/estudiante/:id', verificaToken, verificaAdmin, (req, res) => {
+
+    let body = req.body;
+
+    Usuario.findOne({
+        attributes: { exclude: ['password'] },
+        where: { codigo: req.params.id, tipo: 'estudiante' }
+    }).then(estudianteDB => {
+
+        if(!estudianteDB){
+
+            return res.status(400).json({
+                ok: false,
+                message: 'Estudiante no encontrado'
+            });
+
+        }
+
+        estudianteDB.update({
+            nombre: body.nombre,
+            apellido: body.apellido,
+            telfijo: body.telfijo,
+            telcel: body.telcel,
+            email: body.email,
+            edad: body.edad
+        }).then(estudiante => {
+
+            if (estudiante) {
+                return res.status(200).json({
+                    ok: true,
+                    message: 'Estudiante actualizado correctamente'
+                });
+            }
+
+        }).catch(err => {
+
+            return res.status(400).json({
+                ok: false,
+                message: err
+            });
+
         });
 
     });

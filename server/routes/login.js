@@ -37,7 +37,7 @@ app.post('/login', (req, res) => {
 
 
         if (usuarioDB.estado == 0) {
-            return res.status(401).json({
+            return res.status(403).json({
                 ok: false,
                 err: {
                     message: 'Usuario en estado: Inactivo'
@@ -51,7 +51,6 @@ app.post('/login', (req, res) => {
         let token = jwt.sign({
             usuario: usuarioDB
         }, process.env.SEED, { expiresIn: process.env.CADUCIDAD_TOKEN });
-
 
         return res.status(200).json({
             ok: true,

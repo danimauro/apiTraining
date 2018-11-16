@@ -15,13 +15,19 @@ const { verificaToken, verificaAdmin } = require('../middlewares/autentication')
 app.get('/usuarios', verificaToken, verificaAdmin, (req, res) => {
 
     Usuario.findAll({
-        attributes: ['identidad', 'nombre', 'apellido', 'sexo', 'fecregistro'],
-        where: { tipo: 'admin', estado: true }
+        attributes: ['identidad', 'nombre', 'apellido', 'telfijo', 'telcel', 'sexo', 'email', 'edad', 'fecregistro', 'estado'],
+        where: { tipo: 'admin' }
     }).then(usuarioDB => {
-        return res.status(400).json({
+        return res.status(200).json({
             ok: true,
             usuarioDB
         });
+    }).catch(err => {
+        return res.status(400).json({
+            ok: false,
+            message: 'error al consultar la información'
+        });
+
     });
 
 });
