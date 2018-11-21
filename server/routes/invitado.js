@@ -15,12 +15,18 @@ app.get('/invitados', verificaToken, (req, res) => {
 
     Invitado.findAll({
         attributes: ['nombre', 'apellido', 'perfil', 'imagen', 'estado'],
-        where: { estado: true }
-    }).then(usuarioDB => {
-        return res.status(400).json({
+        where: { }
+    }).then(invitadosDB => {
+        return res.status(200).json({
             ok: true,
-            usuarioDB
+            invitadosDB
         });
+    }).catch(err => {
+        return res.status(400).json({
+            ok: false,
+            message: err.errors
+        });
+
     });
 
 });
@@ -45,13 +51,13 @@ app.post('/invitado', verificaToken, verificaAdmin, (req, res) => {
 
     }).then(() => {
 
-        return res.status(400).json({
+        return res.status(200).json({
             ok: true,
             message: 'Invitado guardado correctamente'
         });
 
     }).catch(err => {
-        return res.status(200).json({
+        return res.status(400).json({
             ok: false,
             message: err.errors
         });

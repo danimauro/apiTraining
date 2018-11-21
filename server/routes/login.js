@@ -20,18 +20,14 @@ app.post('/login', (req, res) => {
         if (!usuarioDB) {
             return res.status(401).json({
                 ok: false,
-                err: {
-                    message: '(Usuario) o contraseña incorrectos'
-                }
+                message: '(Usuario) o contraseña incorrectos'
             });
         }
 
         if (!bcrypt.compareSync(body.password, usuarioDB.password)) {
             return res.status(401).json({
                 ok: false,
-                err: {
-                    message: 'Usuario o (contraseña) incorrectos'
-                }
+                message: 'Usuario o (contraseña) incorrectos'
             });
         }
 
@@ -39,9 +35,7 @@ app.post('/login', (req, res) => {
         if (usuarioDB.estado == 0) {
             return res.status(403).json({
                 ok: false,
-                err: {
-                    message: 'Usuario en estado: Inactivo'
-                }
+                message: 'Usuario en estado: Inactivo'
             });
         }
 
@@ -62,9 +56,7 @@ app.post('/login', (req, res) => {
         if (err) {
             return res.status(500).json({
                 ok: false,
-                err: {
-                    message: 'Error al realizar la consula en la base de datos'
-                }
+                message: 'Error al realizar la consula en la base de datos'
             });
         }
     });

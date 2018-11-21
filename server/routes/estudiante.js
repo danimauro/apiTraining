@@ -69,12 +69,48 @@ app.post('/estudiante', verificaToken, verificaAdmin, (req, res) => {
     }).catch(err => {
         return res.status(400).json({
             ok: false,
-            message: err.errors
+            message: 'Error al registrar el estudiante'
         });
 
     });
 
 });
+
+/*==============
+* Devuelve un estudiante por medio de un codigo
+================*/
+
+app.get('/estudiante/:id', verificaToken, (req, res) => {
+
+    Usuario.findAll({
+        attributes: { exclude: ['password', 'tipo', 'updatedAt', 'createdAt']  },
+        where: { tipo: 'estudiante', codigo: req.params.id }
+    }).then(estudiantesDB => {
+
+        if(!estudiantesDB.length > 0){
+
+            return res.status(400).json({
+                ok: false,
+                message: 'Estudiante no encontrado'
+            });
+
+        }
+
+        return res.status(200).json({
+            ok: true,
+            estudiantesDB
+        });
+        
+    }).catch(err => {
+        return res.status(500).json({
+            ok: false,
+            message: 'Error al consultar la información'
+        });
+
+    });
+
+});
+
 
 /*==============
 * Traer los eventos relacionados a un estudiante por medio del id
@@ -85,6 +121,7 @@ app.get('/estuevento/:id', verificaToken, verificaAdmin, (req, res) => {
 
 
     Usuario.findAll({
+        
         include:[{
             model: Evento,
             as: 'eventoUsuario',
@@ -93,25 +130,30 @@ app.get('/estuevento/:id', verificaToken, verificaAdmin, (req, res) => {
             where: { },
         }],
         attributes: ['codigo','identidad', 'nombre', 'apellido', 'email', 'telcel', 'telfijo', 'edad', 'sexo', 'fecregistro'],
-        where: { estado: true, codigo: req.params.id }
+        where: { codigo: req.params.id }
+
     }).then(eventosEstudianteDB => {
 
-        if (eventosEstudianteDB.length > 0) {
+        return res.status(200).json({
+            ok: true,
+            eventosEstudianteDB
+        });
+        
 
-            return res.status(200).json({
-                ok: true,
-                eventosEstudianteDB
-            });
-        }
+    }).catch(err => {
 
-        return res.status(400).json({
+        return res.status(500).json({
             ok: false,
-            message: 'No se encontró un estudiante con ese codigo'
+            message: 'Error al comunicarse con el servidor'
         });
 
     });
 
 });
+
+/*
+    Actulizar Estudiante
+*/
 
 app.put('/estudiante/:id', verificaToken, verificaAdmin, (req, res) => {
 
@@ -132,12 +174,14 @@ app.put('/estudiante/:id', verificaToken, verificaAdmin, (req, res) => {
         }
 
         estudianteDB.update({
+            
             nombre: body.nombre,
             apellido: body.apellido,
             telfijo: body.telfijo,
             telcel: body.telcel,
             email: body.email,
             edad: body.edad
+
         }).then(estudiante => {
 
             if (estudiante) {
@@ -151,7 +195,7 @@ app.put('/estudiante/:id', verificaToken, verificaAdmin, (req, res) => {
 
             return res.status(400).json({
                 ok: false,
-                message: err
+                message: 'Error al actualizar el estudiante'
             });
 
         });

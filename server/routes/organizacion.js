@@ -14,14 +14,23 @@ const { verificaToken, verificaAdmin } = require('../middlewares/autentication')
 app.get('/organizaciones', verificaToken, (req, res) => {
 
     Organizacion.findAll({
-        attributes: ['id', 'nombre', 'descrip', 'imagen', 'estado'],
-        where: { estado: true }
+        attributes: ['codigo', 'nombre', 'descrip', 'imagen', 'estado'],
+        where: { }
     }).then(organiDB => {
+        
         return res.status(200).json({
             ok: true,
             organiDB
         });
-    });
+
+    }).catch(err => {
+
+        return res.status(400).json({
+            ok: false,
+            message: err.errors
+        });
+
+    });;
 
 });
 

@@ -13,10 +13,8 @@ let verificaToken = (req, res, next) => {
     jwt.verify(token, process.env.SEED, (err, decoded) => {
         if (err) {
             return res.status(401).json({
-                ok: false,
-                err: {
-                    message: 'Token no válido'
-                }
+                ok: false,  
+                message: 'Token no válido'
             })
         }
 
@@ -44,9 +42,7 @@ let verificaAdmin = (req, res, next) => {
         } else {
             return res.status(401).json({
                 ok: false,
-                err: {
-                    message: 'No tienes permisos para este proceso'
-                }
+                message: 'No tienes permisos para este proceso'
             })
         }
 

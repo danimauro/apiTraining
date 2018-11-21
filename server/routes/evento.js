@@ -53,7 +53,7 @@ app.post('/evento', verificaToken, verificaAdmin, (req, res) => {
 
     }).then(() => {
 
-        res.status(201).json({
+        return res.status(201).json({
             ok: true,
             message: 'Evento guardado correctamente'
         });
