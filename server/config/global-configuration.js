@@ -2,6 +2,7 @@
 //  Puerto
 // ============================
 process.env.PORT = process.env.PORT || 3000;
+process.env.ROUTE_IMG_ORGANIZACIONES = 'http://localhost:3000/uploads/organizaciones/';
 
 
 // ============================

@@ -46,14 +46,14 @@ app.post('/estudiante', verificaToken, verificaAdmin, (req, res) => {
 
     Usuario.create({
 
-        identidad: body.identidad,
-        nombre: body.nombre,
-        apellido: body.apellido,
-        telfijo: body.telfijo,
-        telcel: body.telcel,
-        edad: body.edad,
-        email: body.email,
-        sexo: body.sexo,
+        identidad: body.identidad.trim(),
+        nombre: body.nombre.trim(),
+        apellido: body.apellido.trim(),
+        telfijo: body.telfijo.trim(),
+        telcel: body.telcel.trim(),
+        edad: body.edad.trim(),
+        email: body.email.trim(),
+        sexo: body.sexo.trim(),
         tipo: 'estudiante',
         password: bcrypt.hashSync(body.password, 10),
         fecregistro: new Date(),
@@ -175,12 +175,11 @@ app.put('/estudiante/:id', verificaToken, verificaAdmin, (req, res) => {
 
         estudianteDB.update({
             
-            nombre: body.nombre,
-            apellido: body.apellido,
-            telfijo: body.telfijo,
-            telcel: body.telcel,
-            email: body.email,
-            edad: body.edad
+            nombre: body.nombre.trim(),
+            apellido: body.apellido.trim(),
+            telfijo: body.telfijo.trim(),
+            telcel: body.telcel.trim(),
+            email: body.email.trim()
 
         }).then(estudiante => {
 
